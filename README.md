@@ -1,8 +1,8 @@
-Game of life
+Evolving sim
 ============
 
-A basic HTML5 canvas template of Conway's Game of Life.
+A Simulation game similar to Anno which has random mutations in gameplay every game. 
 
-For use with coding events so developers can worry about implementation, not rendering.
+It then uses these mutations to evolve itself to be the most addictive game ever (in theory). 
 
-Open main.js and implement the main function to begin.
+
