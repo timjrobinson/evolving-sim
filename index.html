@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title></title>
   <link rel="stylesheet" href="./style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="./game.js"></script>
   <script src="./main.js"></script>
   <script src="./renderer.js"></script>
   <script src="./grids.js"></script>
@@ -11,6 +13,28 @@
 <body>
 <div id="main-container">
   <canvas id="grid" oncontextmenu="javascript:return false;"></canvas>
+</div>
+<div id="menu">
+  <ul>
+    <li class='build' id="house">
+      <a>House</a>
+    </li>
+    <li class='build' id="fisherie">
+      <a>Fisherie</a>
+    </li>
+    <li class='build' id="brewery">
+      <a>Brewery</a>
+    </li>
+  </ul>
+  <div>Selected: <span id="selected"></span></div>
+  <div>
+    <strong>Resources</strong>
+    <div id="resources"></div>
+  </div>
+  <div>
+    <strong>Constructed</strong>
+    <div id="constructed"></div>
+  </div>
 </div>
 <div id="settings">
   Width: <input id="width" type="range" min="1" max="300"><span id="width-value"></span>

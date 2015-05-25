@@ -7,8 +7,8 @@ log = console.log.bind(console);
 
 var Grid = {};
 
-var WIDTH       = 90,
-    HEIGHT      = 50,
+var WIDTH       = 10,
+    HEIGHT      = 10,
     GUTTERSIZE = 8,  // Amount of offscreen pixel spaces
     SPEED      = 30; // Milliseconds
 
@@ -25,7 +25,7 @@ Grid.setSliderValues = function() {
 
 Grid.addListeners = function() {
   document.addEventListener("keydown", this.key.down, false);
-  this.canvas.addEventListener("mousedown", this.mouse.down, false);
+  $(this.canvas).mousedown(this.mouse.down);
   this.canvas.addEventListener("mouseup", this.mouse.up, false);
   this.canvas.addEventListener("mousemove", this.mouse.move, false);
   this.widthSlider.addEventListener("input", this.setSliderValues.bind(this), false);
@@ -122,7 +122,9 @@ Grid.resetGrid = function() {
 };
 
 Grid.putPixel = function(x, y) {
-  this.pixels[x + this.initialX][y + this.initialY] = true;
+  if (this.pixels[x + this.initialX][y + this.initialY] == false) {
+    this.pixels[x + this.initialX][y + this.initialY] = true;
+  }
   this.context.rect(x * this.pixelWidth + 1, y * this.pixelWidth + 1, this.pixelWidth - 2, this.pixelWidth - 2);
 };
 
@@ -155,7 +157,7 @@ Grid.nextGeneration = function() {
     for (y = 0; y < this.height; ++y) {
       if (this.genStep[x] && this.genStep[x][y]) {
         this.putPixel(x - this.initialX, y - this.initialY);
-        this.pixels[x][y] = true;
+        this.pixels[x][y] = this.genStep[x][y];
       } else {
         this.pixels[x][y] = false;
       }
@@ -191,7 +193,7 @@ Grid.mouse = {
         y = Math.floor((ev.offsetY || ev.clientY - Grid.canvas.offsetTop) * Grid.pixelScaleY / Grid.pixelWidth);
     this.oldX = x;
     this.oldY = y;
-    this.rightClick = ev.which === 3;
+    this.rightClick = (ev.which === 2 || ev.which === 3);
     Grid.context.beginPath();
     if (this.rightClick) {
       Grid.delPixel(x, y);
@@ -245,4 +247,6 @@ Grid.key = {
 document.addEventListener("DOMContentLoaded", function() {
   Grid.setup(WIDTH, HEIGHT, GUTTERSIZE, document.getElementById("grid"));
   Grid.appendPresets();
+  Grid.paused = false;
+  Grid.generationLoop(true);
 }, false);

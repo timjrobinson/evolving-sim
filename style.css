@@ -9,6 +9,15 @@ html, body {
   text-align: center;
   width: 100%;
   background-color: #aaa;
+  float: left;
+}
+
+#menu {
+  width: 10%;
+  background-color: #ddd;
+  position: fixed;
+  right: 10px;
+  top: 50px;
 }
 
 #grid {
@@ -37,3 +46,24 @@ html, body {
 input[type="range"] {
   min-width: 200px;
 }
+
+#menu {
+  text-align: center;
+  margin: 0 auto;
+}
+
+#menu ul {
+  list-style: none;
+  margin-left: -40px;
+}
+
+#menu ul li {
+  border: 1px solid black;
+  background-color: #99CCFF;
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 20px;
+}
+

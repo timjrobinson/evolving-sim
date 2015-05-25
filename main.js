@@ -1,4 +1,4 @@
-/* globals Grid */
+/* globals Grid, building, world, build, destroy giveResources, drawConstructedBuildings, drawResources, checkResources  */
 /*
  * Main
  *
@@ -16,50 +16,52 @@
     [0, 1, 0]
   ]
  */
+ 
+var lastUpdate = 0;
+
 function main (width, height, cells) {
   var newCells = Grid.createGrid(width, height);
   
-  // cells = [0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0];
-  // width = cells.length;
+  if (world === null) {
+    world = cells;
+  };
   
-  for (var i = 0; i < width; i = i + 1) {
-    for (var j = 0; j < height; j = j + 1) {
-      var cell = cells[i][j];
-      
-      var topLeft = cells[i-1] ? cells[i-1][j-1] : 0;
-      var topCenter = cells[i][j-1] || 0;
-      var topRight = cells[i+1] ? cells[i+1][j-1] : 0;
-      var middleLeft = cells[i-1] ? cells[i-1][j] : 0; 
-      var middleRight = cells[i+1] ? cells[i+1][j] : 0;
-      var bottomLeft = cells[i-1] ? cells[i-1][j+1] : 0;
-      var bottomCenter = cells[i][j+1] || 0;
-      var bottomRight = cells[i+1] ? cells[i+1][j+1] : 0
-      
-      var isAlive = cell;
-      var numberOfNeighborsNeededToLive = 2;
-      var totalAliveNeighbors = 0;  
-      
-      totalAliveNeighbors = topLeft + topCenter + topRight + middleLeft + middleRight + bottomLeft + bottomCenter + bottomRight
-      
-      if (totalAliveNeighbors < 2){
-        isAlive = false;
+  
+  // Codes
+  // cells = new world state
+  // world = old world state
+  
+  for(var i=0; i<width; i++) {
+    for(var j=0; j<height; j++) {
+      if(world[i][j] !== cells[i][j]) {
+        var constructedSomething = cells[i][j]
+        if (constructedSomething) {
+          var buildResult = build(i, j);
+          if (buildResult === false) {
+            cells[i][j] = false;
+          } else {
+            cells[i][j] = buildResult;
+          }
+        } else {
+          var buildingName = world[i][j]
+          destroy(buildingName);
+        }
       }
-      
-      if (totalAliveNeighbors > 3) {
-        isAlive = false;
-      }
-      
-      if (totalAliveNeighbors == 3) {
-        isAlive = true;
-      }
-      
-      
-        
-      newCells[i][j] = isAlive;
     }
+  };
+
+  if (lastUpdate < Date.now() - 1000) {
+    giveResources();
+    lastUpdate = Date.now();
   }
   
+  drawConstructedBuildings();
+  drawResources();
+    
+  checkResources();
+  
+  world = cells;
+  
 
-
-  return newCells;
+  return cells;
 }
